@@ -1,0 +1,26 @@
+#!/bin/bash
+# organize code with the information
+# wrap with ''' for the ease of inserting into markdown files
+
+for i in $@
+do
+
+servername=UTHSC_2012_jlee307_WSL
+path=$(readlink -m $i)
+filename=$(basename $path)
+
+echo "### ${filename}"
+echo '```'
+echo "#####################################
+# FILENAME : ${filename}
+# SERVER : ${servername}
+# DIRNAME : $(dirname $path)
+# LAST_MODIFIED : $( stat -Lc %y $path )
+#####################################
+"
+cat $i
+echo
+echo '```'
+echo
+
+done
