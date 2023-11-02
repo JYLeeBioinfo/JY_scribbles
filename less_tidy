@@ -1,0 +1,42 @@
+#!/bin/bash
+
+
+python3 -c '
+import sys
+
+try : # is zero-based
+    tmp_idx = sys.argv.index("--zero")
+    _ = sys.argv.pop(tmp_idx)
+    offset = 0
+except :
+    offset = 1
+
+try : # the first argument that is non-negative integer will be recognized as column width
+    tmp_idx = list(map(str.isdigit,sys.argv)).index(True)
+    L = int(sys.argv.pop(tmp_idx))
+except :
+    L = 16
+
+def wrap_a_column(string,L=L):
+
+    diff = L - len(string)
+    substr = string[:L]
+    abbrev = " ... " if diff < 0 else "     "
+    return substr + " "*( L - len(substr) ) + abbrev
+
+def wrap_a_line(line,L=L):
+    if type(line)==str:
+        sp = line.strip("\n").split("\t")
+    else :
+        sp = [ str(i) for i in line ]
+    return "\t".join( wrap_a_column(i) for i in sp  )
+
+is_firstline = True
+for line in sys.stdin:
+    sp = line.strip("\n").split("\t")
+    if is_firstline :
+        print(wrap_a_line( i + offset for i in range(len(sp))))
+        is_firstline = False
+    print(wrap_a_line(line))
+
+' $@ | less -S
