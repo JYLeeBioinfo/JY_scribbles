@@ -1,0 +1,38 @@
+python3 -c '
+import sys
+
+try:
+    opt = sys.argv[1]
+except:
+    opt = ""
+
+
+if opt == "-c" :
+    d={}
+    for line in sys.stdin:
+        row = line.strip("\n")
+        if row not in d : d[row] = 0
+        d[row] += 1
+
+    for row,cnt in d.items():
+        print( f"{row}\t{cnt}" )
+elif opt == "-ca" :
+    lines = []
+    d={}
+    for line in sys.stdin:
+        row = line.strip("\n")
+        lines.append(row)
+        if row not in d : d[row] = 0
+        d[row] += 1
+
+    for row in lines:
+        print( f"{row}\t{d[row]}" )
+else :
+    s=set()
+    for line in sys.stdin:
+        row = line.strip("\n")
+        if row not in s :
+            print(f"{row}")
+            s.add(row)
+
+' $1
