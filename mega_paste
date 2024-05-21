@@ -1,0 +1,17 @@
+#!/bin/bash
+set -exo pipefail
+# Referred to answers by KamilCuk in https://stackoverflow.com/a/68209278
+# usage :
+# mega_paste filelist.txt > output.txt
+
+UUID=$(uuidgen)
+fn=tmpdir/output_${UUID}.txt
+mkdir -p tmpdir
+touch ${fn}
+cat $1 |
+xargs -d '\n' -n $(($(ulimit -n) - 1)) bash -c '
+       paste '"${fn}"' "$@" > '"${fn}"'.sav;
+       mv '"${fn}"'.sav '"${fn}"'
+' _
+cut -f 2- "${fn}"
+rm -rf "${fn}"
