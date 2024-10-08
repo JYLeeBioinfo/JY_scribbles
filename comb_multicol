@@ -1,4 +1,4 @@
-#!/datastore/user/jlee307/miniforge3/envs/python_latest/bin/python
+#!/usr/bin/python
 
 import sys
 
